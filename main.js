@@ -1,7 +1,18 @@
+function sayHI() {
+  worker.postMessage({'cmd': 'start', 'msg': 'Hi'});
+}
+
+function stop() {
+  // worker.terminate() from this script would also stop the worker.
+  worker.postMessage({'cmd': 'stop', 'msg': 'Bye'});
+}
+
+function unknownCmd() {
+  worker.postMessage({'cmd': 'foobard', 'msg': '???'});
+}
+
 var worker = new Worker('doWork.js');
 
 worker.addEventListener('message', function(e) {
-  console.log('Worker said: ', e.data);
+  document.getElementById('result').textContent = e.data;
 }, false);
-
-worker.postMessage({ message: 'Hello this is a service worker! What can I do for you?'});
